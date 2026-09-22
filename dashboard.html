@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GMW Soft 대시보드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A1628;--navy2:#102040;--blue:#0073BC;--purple:#7e308d;
+  --teal:#00C9D4;--white:#fff;--dgray:#1e1e1e;--mgray:#444;
+  --lgray:#888;--xlgray:#ccc;--bg:#F0F2F5;--card:#fff;
+  --border:#E0E4EA;--red:#DC2626;--green:#16A34A;--amber:#D97706;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--dgray);min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,var(--navy),#1a0a35)}
+.login-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:48px 40px;width:100%;max-width:380px;text-align:center}
+.login-logo{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:8px}
+.login-logo span{color:var(--teal)}
+.login-sub{font-size:0.85rem;color:#94A3B8;margin-bottom:32px}
+.login-input{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:#fff;font-size:0.95rem;font-family:inherit;outline:none;margin-bottom:14px;transition:border-color 0.2s}
+.login-input:focus{border-color:var(--teal)}
+.login-input::placeholder{color:#475569}
+.login-btn{width:100%;background:var(--teal);color:var(--navy);border:none;border-radius:8px;padding:13px;font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.login-btn:hover{background:#00E5EE}
+.login-error{font-size:0.82rem;color:#F87171;margin-top:10px;min-height:18px}
+
+/* ── DASHBOARD ── */
+#dashboard{display:none;min-height:100vh}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--navy);padding:24px 0;z-index:100}
+.sb-logo{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sb-logo-text{font-size:1.2rem;font-weight:700;color:#fff}
+.sb-logo-text span{color:var(--teal)}
+.sb-logo-sub{font-size:0.7rem;color:#475569;margin-top:2px}
+.sb-menu{padding:16px 0}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;color:#94A3B8;font-size:0.88rem;transition:all 0.15s;border-left:3px solid transparent}
+.sb-item:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.sb-item.active{color:var(--teal);background:rgba(0,201,212,0.08);border-left-color:var(--teal)}
+.sb-icon{font-size:1rem;width:20px;text-align:center}
+.sb-bottom{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;border-top:1px solid rgba(255,255,255,0.08)}
+.sb-logout{display:flex;align-items:center;gap:8px;color:#64748B;font-size:0.82rem;cursor:pointer;transition:color 0.2s}
+.sb-logout:hover{color:#fff}
+
+/* Main */
+.main{margin-left:220px;padding:28px 32px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.page-title{font-size:1.3rem;font-weight:700;color:var(--dgray)}
+.page-date{font-size:0.82rem;color:var(--lgray)}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;border-top:3px solid var(--blue)}
+.stat-card.red{border-top-color:var(--red)}
+.stat-card.green{border-top-color:var(--green)}
+.stat-card.amber{border-top-color:var(--amber)}
+.stat-num{font-size:2rem;font-weight:700;color:var(--dgray);line-height:1}
+.stat-label{font-size:0.78rem;color:var(--lgray);margin-top:6px}
+
+/* Filters */
+.filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-size:0.82rem;cursor:pointer;font-family:inherit;color:var(--mgray);transition:all 0.15s}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.add-btn{margin-left:auto;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s;display:flex;align-items:center;gap:6px}
+.add-btn:hover{opacity:0.88}
+
+/* Todo list */
+.todo-section{margin-bottom:24px}
+.section-label{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.section-name{font-size:0.78rem;font-weight:700;letter-spacing:0.08em;color:var(--lgray);text-transform:uppercase}
+.section-count{font-size:0.75rem;padding:2px 8px;border-radius:10px}
+.todo-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;transition:box-shadow 0.15s}
+.todo-card:hover{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.todo-card.done{opacity:0.5}
+.check-btn{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--xlgray);flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:#fff}
+.check-btn.checked{background:var(--green);border-color:var(--green);color:#fff}
+.todo-body{flex:1}
+.todo-text{font-size:0.92rem;color:var(--dgray);line-height:1.4}
+.todo-card.done .todo-text{text-decoration:line-through;color:var(--lgray)}
+.todo-meta{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.todo-tag{font-size:0.72rem;padding:2px 8px;border-radius:10px;font-weight:500}
+.todo-due{font-size:0.72rem;color:var(--lgray);display:flex;align-items:center;gap:3px}
+.todo-actions{display:flex;gap:4px;flex-shrink:0}
+.action-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.78rem;color:var(--lgray);transition:all 0.15s}
+.action-btn:hover{background:var(--bg);color:var(--dgray)}
+.action-btn.del:hover{background:#FEE2E2;color:var(--red);border-color:#FCA5A5}
+
+/* Modal */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal-title{font-size:1rem;font-weight:700;margin-bottom:20px;color:var(--dgray)}
+.form-group{margin-bottom:16px}
+.form-label{font-size:0.78rem;font-weight:500;color:var(--mgray);margin-bottom:6px;display:block}
+.form-input,.form-select,.form-textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:0.9rem;font-family:inherit;color:var(--dgray);outline:none;background:#fff;transition:border-color 0.2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--blue)}
+.form-textarea{min-height:70px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.btn-cancel{padding:9px 20px;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:0.88rem;cursor:pointer;font-family:inherit;color:var(--mgray)}
+.btn-save{padding:9px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* Priority dots */
+.p-urgent{background:#FEE2E2;color:var(--red)}
+.p-week{background:#FEF3C7;color:#B45309}
+.p-month{background:#DBEAFE;color:var(--blue)}
+.p-long{background:#D1FAE5;color:var(--green)}
+
+/* Empty state */
+.empty{text-align:center;padding:48px 24px;color:var(--lgray);font-size:0.88rem}
+.empty-icon{font-size:2rem;margin-bottom:12px}
+
+/* Progress bar */
+.progress-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:28px}
+.progress-label{display:flex;justify-content:space-between;font-size:0.82rem;color:var(--lgray);margin-bottom:8px}
+.progress-bar-bg{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:4px;transition:width 0.4s}
+
+@media(max-width:768px){
+  .sidebar{width:100%;height:56px;bottom:auto;display:flex;align-items:center;padding:0 16px;gap:0}
+  .sb-logo{padding:0;border:none;margin-right:auto}
+  .sb-menu{display:flex;padding:0;gap:4px;overflow-x:auto}
+  .sb-item{padding:8px 10px;border-left:none;border-bottom:2px solid transparent;font-size:0.78rem;flex-direction:column;gap:2px;white-space:nowrap}
+  .sb-item.active{border-bottom-color:var(--teal)}
+  .sb-bottom{display:none}
+  .main{margin-left:0;margin-top:56px;padding:16px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">GMW<span>Soft</span></div>
+    <div class="login-sub">관리자 대시보드</div>
+    <input class="login-input" type="text" id="login-id" placeholder="아이디" autocomplete="off">
+    <input class="login-input" type="password" id="login-pw" placeholder="비밀번호" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text">GMW<span>Soft</span></div>
+      <div class="sb-logo-sub">관리자 대시보드</div>
+    </div>
+    <div class="sb-menu">
+      <div class="sb-item active" onclick="setPage('todo')"><span class="sb-icon">✅</span>할 일 관리</div>
+      <div class="sb-item" onclick="setPage('memo')"><span class="sb-icon">📝</span>메모</div>
+      <div class="sb-item" onclick="window.open('GMWSoft_homepage.html')"><span class="sb-icon">🌐</span>홈페이지</div>
+      <div class="sb-item" onclick="window.open('AML_detail.html')"><span class="sb-icon">🏦</span>AML 페이지</div>
+    </div>
+    <div class="sb-bottom">
+      <div class="sb-logout" onclick="doLogout()"><span>🚪</span>로그아웃</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- TODO PAGE -->
+    <div id="page-todo">
+      <div class="page-header">
+        <div>
+          <div class="page-title">할 일 관리</div>
+          <div class="page-date" id="today-date"></div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>전체 진행률</span>
+          <span id="progress-text">0 / 0 완료</span>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card red"><div class="stat-num" id="stat-urgent">0</div><div class="stat-label">긴급</div></div>
+        <div class="stat-card amber"><div class="stat-num" id="stat-week">0</div><div class="stat-label">이번 주</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-month">0</div><div class="stat-label">이번 달</div></div>
+        <div class="stat-card green"><div class="stat-num" id="stat-done">0</div><div class="stat-label">완료됨</div></div>
+      </div>
+
+      <!-- Filter + Add -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter('all',this)">전체</button>
+        <button class="filter-btn" onclick="setFilter('urgent',this)">긴급</button>
+        <button class="filter-btn" onclick="setFilter('week',this)">이번 주</button>
+        <button class="filter-btn" onclick="setFilter('month',this)">이번 달</button>
+        <button class="filter-btn" onclick="setFilter('long',this)">중기</button>
+        <button class="filter-btn" onclick="setFilter('done',this)">완료</button>
+        <button class="add-btn" onclick="openModal()">+ 추가</button>
+      </div>
+
+      <!-- Todo List -->
+      <div id="todo-list"></div>
+    </div>
+
+    <!-- MEMO PAGE -->
+    <div id="page-memo" style="display:none">
+      <div class="page-header"><div class="page-title">메모</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px">
+        <textarea id="memo-area" style="width:100%;min-height:400px;border:none;outline:none;font-family:inherit;font-size:0.9rem;color:var(--dgray);resize:vertical;line-height:1.7" placeholder="자유롭게 메모하세요..."></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+          <span style="font-size:0.78rem;color:var(--lgray)" id="memo-saved">변경 시 자동 저장됩니다</span>
+          <button onclick="saveMemo()" style="padding:7px 16px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:0.82rem;cursor:pointer;font-family:inherit">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">할 일 추가</div>
+    <div class="form-group">
+      <label class="form-label">할 일 내용 *</label>
+      <input class="form-input" id="f-text" placeholder="할 일을 입력하세요">
+    </div>
+    <div class="form-group">
+      <label class="form-label">세부 내용</label>
+      <textarea class="form-textarea" id="f-sub" placeholder="추가 설명 (선택)"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">카테고리</label>
+        <select class="form-select" id="f-cat">
+          <option value="urgent">긴급</option>
+          <option value="week">이번 주</option>
+          <option value="month">이번 달</option>
+          <option value="long">중기</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">태그</label>
+        <input class="form-input" id="f-tag" placeholder="예: 법률, 개발, 영업">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">마감일</label>
+      <input class="form-input" type="date" id="f-due">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveTodo()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASS = {id:'gmwsoft', pw:'trusty2026'};
+let todos = JSON.parse(localStorage.getItem('gmw_todos')||'[]');
+let filter = 'all';
+let editId = null;
+
+const catMap = {urgent:{label:'긴급',cls:'p-urgent'},week:{label:'이번 주',cls:'p-week'},month:{label:'이번 달',cls:'p-month'},long:{label:'중기',cls:'p-long'}};
+
+function doLogin(){
+  const id=document.getElementById('login-id').value.trim();
+  const pw=document.getElementById('login-pw').value;
+  if(id===PASS.id&&pw===PASS.pw){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    init();
+  } else {
+    document.getElementById('login-error').textContent='아이디 또는 비밀번호가 틀립니다';
+  }
+}
+document.getElementById('login-pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function doLogout(){
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-id').value='';
+  document.getElementById('login-pw').value='';
+}
+
+function init(){
+  if(!todos.length) initDefault();
+  const now=new Date();
+  document.getElementById('today-date').textContent=now.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+  loadMemo();
+  render();
+}
+
+function initDefault(){
+  todos=[
+    {id:1,text:'NEUL Care Tony Kim 이메일 발송',sub:'tony@geronx.ai · 내일 오전 9~10시',cat:'urgent',tag:'네트워킹',due:'2026-09-11',done:false},
+    {id:2,text:'GTOne 서면 확인 메시지 발송',sub:'업무범위·미지급건 확인',cat:'urgent',tag:'법률',due:'2026-09-18',done:false},
+    {id:3,text:'홈페이지 Netlify 배포',sub:'drop.netlify.com → GMWSoft_website.zip',cat:'urgent',tag:'홈페이지',due:'',done:false},
+    {id:4,text:'모두의 창업 좋아요 공유',sub:'가족·지인 카톡 직접 링크 발송',cat:'urgent',tag:'LifeSat',due:'2026-09-17',done:false},
+    {id:5,text:'대한법률구조공단 상담',sub:'☎ 132 · GTOne 계약분쟁',cat:'week',tag:'법률',due:'',done:false},
+    {id:6,text:'Claude API 키 발급 + 크레딧 충전',sub:'platform.claude.com · 최소 $5',cat:'week',tag:'개발',due:'',done:false},
+    {id:7,text:'DART API 승인 확인',sub:'dart.fss.or.kr · 지엠더블유소프트 법인',cat:'week',tag:'개발',due:'',done:false},
+    {id:8,text:'차기 프로젝트 수주 활동',sub:'경력서 배포 · AML 상세 페이지 링크 활용',cat:'week',tag:'영업',due:'',done:false},
+    {id:9,text:'CAMS 응시 신청',sub:'acams.org 회원가입 · 40 Credits 확인',cat:'month',tag:'자격증',due:'',done:false},
+    {id:10,text:'PMP 준비 시작',sub:'35시간 교육 수강 신청',cat:'month',tag:'자격증',due:'',done:false},
+    {id:11,text:'특허 출원 착수',sub:'변리사 선임 · 발명진흥회 ☎ 1544-8080',cat:'month',tag:'LifeSat',due:'2027-08-27',done:false},
+    {id:12,text:'LifeSat PoC 개발',sub:'AI 이상감지 알고리즘 · Iridium 9603 테스트',cat:'long',tag:'LifeSat',due:'',done:false},
+    {id:13,text:'StockShield 개발 착수',sub:'DART API + Claude API 연동 · 텔레그램 봇',cat:'long',tag:'StockShield',due:'',done:false},
+    {id:14,text:'서울창업허브 공덕 입주 신청',sub:'hubgongdeok.startup-plus.kr · AI 분야',cat:'long',tag:'창업',due:'',done:false},
+  ];
+  save();
+}
+
+function save(){localStorage.setItem('gmw_todos',JSON.stringify(todos));}
+
+function render(){
+  const list=document.getElementById('todo-list');
+  const cats=['urgent','week','month','long'];
+  const filtered=filter==='all'?todos:filter==='done'?todos.filter(t=>t.done):todos.filter(t=>t.cat===filter&&!t.done);
+  const grouped={};
+  cats.forEach(c=>grouped[c]=[]);
+  if(filter==='done'){
+    grouped['done']=todos.filter(t=>t.done);
+  } else {
+    filtered.forEach(t=>{if(grouped[t.cat])grouped[t.cat].push(t);});
+  }
+
+  const total=todos.length;
+  const done=todos.filter(t=>t.done).length;
+  document.getElementById('progress-text').textContent=`${done} / ${total} 완료`;
+  document.getElementById('progress-bar').style.width=(total?Math.round(done/total*100):0)+'%';
+  document.getElementById('stat-urgent').textContent=todos.filter(t=>t.cat==='urgent'&&!t.done).length;
+  document.getElementById('stat-week').textContent=todos.filter(t=>t.cat==='week'&&!t.done).length;
+  document.getElementById('stat-month').textContent=todos.filter(t=>t.cat==='month'&&!t.done).length;
+  document.getElementById('stat-done').textContent=done;
+
+  let html='';
+  const showCats=filter==='done'?['done']:filter==='all'?cats:cats.filter(c=>c===filter);
+  showCats.forEach(cat=>{
+    const items=grouped[cat]||[];
+    if(!items.length&&filter!=='all')return;
+    const cm=catMap[cat]||{label:'완료',cls:'p-long'};
+    html+=`<div class="todo-section">
+      <div class="section-label">
+        <span class="section-name">${cm.label||'완료'}</span>
+        <span class="section-count ${cm.cls}" style="font-size:0.75rem;padding:2px 8px;border-radius:10px">${items.length}</span>
+      </div>`;
+    if(!items.length){html+=`<div class="empty"><div class="empty-icon">✓</div>모두 완료됐습니다</div>`;}
+    items.forEach(t=>{
+      html+=`<div class="todo-card${t.done?' done':''}">
+        <div class="check-btn${t.done?' checked':''}" onclick="toggle(${t.id})">${t.done?'✓':''}</div>
+        <div class="todo-body">
+          <div class="todo-text">${t.text}</div>
+          ${t.sub?`<div class="todo-due" style="margin-top:4px">${t.sub}</div>`:''}
+          <div class="todo-meta">
+            ${t.tag?`<span class="todo-tag ${catMap[t.cat]?.cls||''}">${t.tag}</span>`:''}
+            ${t.due?`<span class="todo-due">📅 ${t.due}</span>`:''}
+          </div>
+        </div>
+        <div class="todo-actions">
+          <button class="action-btn" onclick="editTodo(${t.id})" title="수정">✏️</button>
+          <button class="action-btn del" onclick="deleteTodo(${t.id})" title="삭제">🗑</button>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  list.innerHTML=html;
+}
+
+function toggle(id){
+  const t=todos.find(t=>t.id===id);
+  if(t){t.done=!t.done;save();render();}
+}
+
+function deleteTodo(id){
+  if(confirm('삭제하시겠습니까?')){todos=todos.filter(t=>t.id!==id);save();render();}
+}
+
+function editTodo(id){
+  const t=todos.find(t=>t.id===id);
+  if(!t)return;
+  editId=id;
+  document.getElementById('modal-title').textContent='할 일 수정';
+  document.getElementById('f-text').value=t.text;
+  document.getElementById('f-sub').value=t.sub||'';
+  document.getElementById('f-cat').value=t.cat;
+  document.getElementById('f-tag').value=t.tag||'';
+  document.getElementById('f-due').value=t.due||'';
+  document.getElementById('modal').classList.add('open');
+}
+
+function openModal(){
+  editId=null;
+  document.getElementById('modal-title').textContent='할 일 추가';
+  document.getElementById('f-text').value='';
+  document.getElementById('f-sub').value='';
+  document.getElementById('f-cat').value='urgent';
+  document.getElementById('f-tag').value='';
+  document.getElementById('f-due').value='';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+
+function saveTodo(){
+  const text=document.getElementById('f-text').value.trim();
+  if(!text){alert('할 일 내용을 입력하세요');return;}
+  const data={text,sub:document.getElementById('f-sub').value.trim(),cat:document.getElementById('f-cat').value,tag:document.getElementById('f-tag').value.trim(),due:document.getElementById('f-due').value};
+  if(editId){
+    const t=todos.find(t=>t.id===editId);
+    if(t)Object.assign(t,data);
+  } else {
+    todos.unshift({id:Date.now(),...data,done:false});
+  }
+  save();render();closeModal();
+}
+
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setPage(p){
+  document.getElementById('page-todo').style.display=p==='todo'?'block':'none';
+  document.getElementById('page-memo').style.display=p==='memo'?'block':'none';
+  document.querySelectorAll('.sb-item').forEach((el,i)=>el.classList.toggle('active',i===(p==='todo'?0:1)));
+}
+
+function saveMemo(){
+  localStorage.setItem('gmw_memo',document.getElementById('memo-area').value);
+  document.getElementById('memo-saved').textContent='저장됨 ✓';
+  setTimeout(()=>document.getElementById('memo-saved').textContent='변경 시 자동 저장됩니다',2000);
+}
+function loadMemo(){
+  const m=localStorage.getItem('gmw_memo')||'';
+  document.getElementById('memo-area').value=m;
+}
+document.getElementById('memo-area')&&document.getElementById('memo-area').addEventListener('input',()=>setTimeout(saveMemo,1000));
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+</script>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeSat — 가족 안심 위성 안전망 | GMW Soft</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #0073BC; --purple: #7e308d; --teal: #00C9D4; --teal2: #00E5EE;
+  --navy: #0A1628; --navy2: #102040; --dgray: #2D2D2D; --mgray: #555;
+  --lgray: #888; --xlgray: #CCC; --bg: #F8FAFB; --white: #FFF;
+  --grad: linear-gradient(135deg, #0073BC 0%, #7e308d 100%);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; color: var(--dgray); background: var(--white); line-height: 1.7; overflow-x: hidden; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,22,40,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,201,212,0.15); display: flex; justify-content: space-between; align-items: center; padding: 0 5%; height: 68px; }
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+.logo-text .gmw { color: var(--blue); }
+.logo-text .soft { color: var(--purple); }
+.logo-sub { font-size: 0.7rem; color: #64748B; margin-left: 10px; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { text-decoration: none; font-size: 0.9rem; color: #94A3B8; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--teal); }
+.nav-cta { background: var(--teal); color: var(--navy); padding: 9px 22px; border-radius: 4px; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--teal2); }
+
+/* HERO */
+.hero { min-height: 100vh; background: linear-gradient(160deg, #0A1628 0%, #102040 60%, #1a0a35 100%); display: flex; align-items: center; padding: 120px 5% 80px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -20%; right: -10%; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(0,115,188,0.15) 0%, transparent 70%); }
+.hero::after { content: ''; position: absolute; bottom: -10%; left: -5%; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(0,201,212,0.08) 0%, transparent 70%); }
+.hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+.breadcrumb { font-size: 0.8rem; color: #475569; margin-bottom: 20px; }
+.breadcrumb a { color: #93C5FD; text-decoration: none; }
+.breadcrumb span { margin: 0 8px; }
+.hero-tag { display: inline-block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; color: var(--teal); border: 1px solid rgba(0,201,212,0.3); padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+.hero-h1 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; color: #fff; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 16px; }
+.hero-h1 em { font-style: normal; color: var(--teal); }
+.hero-desc { font-size: 1rem; color: #93C5FD; font-weight: 300; margin-bottom: 36px; line-height: 1.8; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-teal { background: var(--teal); color: var(--navy); padding: 13px 28px; font-weight: 700; font-size: 0.95rem; border-radius: 4px; text-decoration: none; transition: background 0.2s; display: inline-block; }
+.btn-teal:hover { background: var(--teal2); }
+.btn-outline { background: transparent; color: #fff; padding: 13px 28px; font-weight: 500; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; text-decoration: none; transition: 0.2s; display: inline-block; }
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+/* 히어로 글로브 */
+.hero-visual { display: flex; justify-content: center; align-items: center; }
+.globe-wrap { position: relative; width: 300px; height: 300px; }
+.globe-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle at 38% 38%, #1565C0, #0d47a1 60%, #0a2a5e); box-shadow: 0 0 50px rgba(0,115,188,0.5); }
+.globe-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotateX(65deg) rotateZ(-20deg); width: 260px; height: 260px; border-radius: 50%; border: 1.5px dashed rgba(0,201,212,0.4); animation: spin 9s linear infinite; }
+@keyframes spin { to { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(340deg); } }
+.globe-sat { position: absolute; top: -7px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; background: var(--teal2); border-radius: 2px; box-shadow: 0 0 16px var(--teal); }
+.pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); border-radius: 50%; border: 1px solid rgba(0,201,212,0.3); animation: pulse-out 3s ease-out infinite; }
+@keyframes pulse-out { 0% { width:180px;height:180px;opacity:.7; } 100% { width:380px;height:380px;opacity:0; } }
+.pulse:nth-child(2) { animation-delay:1s; }
+.pulse:nth-child(3) { animation-delay:2s; }
+
+/* SECTIONS */
+.section { padding: 88px 5%; }
+.section.dark { background: linear-gradient(160deg, #0A1628, #102040); }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-tag { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; color: var(--blue); margin-bottom: 12px; }
+.section-tag.light { color: var(--teal); }
+.section-h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+.section-h2.white { color: #fff; }
+.section-desc { font-size: 1rem; color: var(--mgray); max-width: 600px; margin-bottom: 52px; line-height: 1.8; }
+.section-desc.light { color: #93C5FD; }
+
+/* 문제 */
+.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.problem-card { background: #fff; border: 1px solid rgba(0,115,188,0.1); border-radius: 10px; padding: 32px 24px; border-top: 3px solid #E53E3E; }
+.problem-icon { font-size: 2.2rem; margin-bottom: 16px; }
+.problem-stat { font-size: 1.8rem; font-weight: 900; color: #E53E3E; margin-bottom: 6px; }
+.problem-title { font-size: 1rem; font-weight: 700; color: var(--dgray); margin-bottom: 10px; }
+.problem-desc { font-size: 0.85rem; color: var(--mgray); line-height: 1.7; }
+
+/* 작동 방식 */
+.how-bg { background: var(--bg); }
+.steps-wrap { margin-top: 52px; }
+.step-row { display: flex; gap: 32px; align-items: flex-start; padding: 28px 0; border-bottom: 1px solid rgba(0,115,188,0.08); }
+.step-row:last-child { border-bottom: none; }
+.step-num { width: 52px; height: 52px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 900; color: #fff; flex-shrink: 0; }
+.step-content { flex: 1; }
+.step-title { font-size: 1.05rem; font-weight: 700; color: var(--dgray); margin-bottom: 8px; }
+.step-desc { font-size: 0.88rem; color: var(--mgray); line-height: 1.7; }
+.step-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag { font-size: 0.72rem; padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0,115,188,0.2); color: var(--blue); background: rgba(0,115,188,0.04); }
+
+/* 기술 스택 */
+.tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 52px; }
+.tech-card { background: rgba(0,201,212,0.06); border: 1px solid rgba(0,201,212,0.15); border-radius: 10px; padding: 32px 24px; }
+.tech-icon { font-size: 2rem; margin-bottom: 14px; }
+.tech-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+.tech-desc { font-size: 0.85rem; color: #94A3B8; line-height: 1.7; }
+
+/* 비교 */
+.compare-table { width: 100%; border-collapse: collapse; margin-top: 52px; }
+.compare-table th { padding: 14px 20px; font-size: 0.85rem; font-weight: 700; background: rgba(0,115,188,0.06); color: var(--mgray); border-bottom: 1px solid rgba(0,0,0,0.06); text-align: left; }
+.compare-table th.hl { color: var(--blue); background: rgba(0,115,188,0.1); }
+.compare-table td { padding: 14px 20px; font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.04); color: var(--mgray); }
+.compare-table td.hl { color: var(--dgray); font-weight: 600; background: rgba(0,115,188,0.03); }
+.chk { color: #2D6A4F; font-weight: 700; }
+.ex  { color: #E53E3E; }
+
+/* 시장 */
+.market-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.market-card { background: #fff; border: 1px solid rgba(0,115,188,0.1); border-radius: 8px; padding: 24px 28px; display: flex; gap: 18px; }
+.market-dot { width: 10px; height: 10px; background: var(--grad); border-radius: 50%; margin-top: 8px; flex-shrink: 0; }
+.market-title { font-size: 0.95rem; font-weight: 700; color: var(--dgray); margin-bottom: 4px; }
+.market-desc { font-size: 0.83rem; color: var(--mgray); line-height: 1.6; }
+.market-size { font-size: 0.78rem; color: var(--blue); font-weight: 600; margin-top: 4px; }
+
+/* CTA */
+.cta-section { background: linear-gradient(160deg, #0A1628, #1a0a35); padding: 96px 5%; text-align: center; }
+.cta-h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: #fff; margin-bottom: 16px; letter-spacing: -0.02em; }
+.cta-h2 em { font-style: normal; color: var(--teal); }
+.cta-desc { font-size: 1rem; color: #94A3B8; margin-bottom: 32px; }
+.cta-guide { background: rgba(0,201,212,0.08); border: 1px solid rgba(0,201,212,0.2); border-radius: 8px; padding: 20px 28px; display: inline-block; margin-bottom: 28px; text-align: left; }
+.cta-guide p { font-size: 0.88rem; color: #94A3B8; line-height: 2; }
+.cta-guide strong { color: var(--teal); }
+
+/* FOOTER */
+footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.footer-logo { font-size: 1.1rem; font-weight: 900; }
+.footer-logo .gmw { color: var(--blue); }
+.footer-logo .soft { color: var(--purple); }
+.footer-info { font-size: 0.78rem; color: #475569; line-height: 1.8; }
+.footer-copy { font-size: 0.78rem; color: #475569; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .problem-grid, .tech-grid { grid-template-columns: 1fr; }
+  .market-grid { grid-template-columns: 1fr; }
+  .step-row { flex-direction: column; gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .globe-ring, .pulse { animation: none; }
+}
+
+/* ── 상단 배너 ── */
+.top-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: linear-gradient(135deg, #0073BC, #7e308d);
+  padding: 10px 5%; display: flex; align-items: center;
+  justify-content: center; gap: 16px;
+}
+.banner-text {
+  font-size: 0.88rem; color: #fff; font-weight: 500;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  justify-content: center;
+}
+.banner-text strong { color: #67E8F9; }
+.banner-link {
+  background: #fff; color: #0073BC;
+  padding: 5px 16px; border-radius: 20px;
+  font-size: 0.82rem; font-weight: 700;
+  text-decoration: none; white-space: nowrap;
+  transition: background 0.2s;
+}
+.banner-link:hover { background: #67E8F9; }
+.banner-close {
+  position: absolute; right: 20px;
+  background: none; border: none; color: rgba(255,255,255,0.7);
+  font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
+  transition: color 0.2s;
+}
+.banner-close:hover { color: #fff; }
+.top-banner.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- 상단 배너 — 모두의 창업 -->
+<div class="top-banner" id="topBanner">
+  <div class="banner-text">
+    <span>🛰️ <strong>모두의 창업 2차</strong> 도전 중!</span>
+    <span>LifeSat — 가족 안심 위성 안전망</span>
+    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4"
+       target="_blank" class="banner-link">♡ 좋아요 누르기</a>
+  </div>
+  <button class="banner-close" onclick="closeBanner()">✕</button>
+</div>
+
+<nav>
+  <a class="logo" href="GMWSoft_homepage.html">
+    <div class="logo-text"><span class="gmw">GMW</span><span class="soft">Soft</span></div>
+    <span class="logo-sub">지엠더블유소프트 (주)</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="GMWSoft_homepage.html#about">회사소개</a></li>
+    <li><a href="AML_detail.html">AML 솔루션</a></li>
+    <li><a href="GMWSoft_homepage.html#reference">레퍼런스</a></li>
+    <li><a href="#">LifeSat</a></li>
+    <li><a href="GMWSoft_homepage.html#contact">문의</a></li>
+  </ul>
+  <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="nav-cta">♡ 좋아요 누르기</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="breadcrumb"><a href="GMWSoft_homepage.html">홈</a><span>›</span>LifeSat</div>
+      <div class="hero-tag">가족 안심 위성 안전망</div>
+      <h1 class="hero-h1">통신이 끊긴 어디서든,<br><em>내 사람은 안전합니다</em></h1>
+      <p class="hero-desc">AI가 건강 이상을 자동 감지하고 위성으로 가족에게 즉시 알립니다. 버튼을 누르지 않아도, 의식이 없어도 작동합니다.</p>
+      <div class="hero-btns">
+        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="btn-teal">♡ 좋아요로 응원하기</a>
+        <a href="#how" class="btn-outline">작동 방식 보기</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="globe-wrap">
+        <div class="pulse"></div>
+        <div class="pulse"></div>
+        <div class="pulse"></div>
+        <div class="globe-core"></div>
+        <div class="globe-ring"><div class="globe-sat"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 문제 -->
+<section class="section">
+  <div class="container">
+    <p class="section-tag">PROBLEM</p>
+    <h2 class="section-h2">매년 반복되는 비극</h2>
+    <p class="section-desc">스마트폰이 터지지 않는 곳에서 쓰러지면, 아무도 모릅니다. 스스로 SOS를 누를 수 없기 때문입니다.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">🏔️</div>
+        <div class="problem-stat">연 1,000건+</div>
+        <div class="problem-title">등산 중 사망·실종</div>
+        <div class="problem-desc">오지 등산로에서 쓰러져도 셀룰러가 없어 구조 요청이 불가합니다. 발견까지 평균 수십 시간이 걸립니다.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🏡</div>
+        <div class="problem-stat">연 3,500명</div>
+        <div class="problem-title">독거노인 고독사</div>
+        <div class="problem-desc">혼자 쓰러져도 알 방법이 없습니다. 통신 음영 지역의 어머니, 아버지가 오늘도 혼자입니다.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🌊</div>
+        <div class="problem-stat">전국 5만명</div>
+        <div class="problem-title">원양어선·오지 종사자</div>
+        <div class="problem-desc">바다 위, 극지, 오지에서 사고가 나도 연락할 방법이 없습니다. 가족은 그저 기다릴 뿐입니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 작동 방식 -->
+<section class="section how-bg" id="how">
+  <div class="container">
+    <p class="section-tag">HOW IT WORKS</p>
+    <h2 class="section-h2">LifeSat 작동 방식</h2>
+    <p class="section-desc">안심밴드를 차고 있으면, 나머지는 AI와 위성이 합니다.</p>
+    <div class="steps-wrap">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">안심밴드 착용</div>
+          <div class="step-desc">손목·반지·목걸이 형태의 전용 안심밴드를 착용합니다. IPX7 방수, 72시간+ 배터리로 등산·해양·일상 어디서든 사용 가능합니다.</div>
+          <div class="step-tags"><span class="tag">IPX7 방수</span><span class="tag">72시간+ 배터리</span><span class="tag">경량 설계</span></div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">생체신호 실시간 측정</div>
+          <div class="step-desc">심박수, 산소포화도(SpO2), 체온, 낙상(가속도계)을 실시간으로 측정합니다. 착용 초기 7일간 개인 평소 패턴을 학습하여 기준선을 수립합니다.</div>
+          <div class="step-tags"><span class="tag">심박수</span><span class="tag">산소포화도</span><span class="tag">체온</span><span class="tag">낙상감지</span></div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Edge AI 자동 이상 감지</div>
+          <div class="step-desc">기기 내장 Edge AI가 개인 기준선과 비교하여 이상을 1차 판단합니다. 인터넷 없이 오프라인으로 작동합니다. 위성 연결 시 Cloud AI(Claude API)가 정밀 분석으로 오탐을 최소화합니다.</div>
+          <div class="step-tags"><span class="tag">Edge AI (오프라인)</span><span class="tag">Cloud AI (정밀분석)</span><span class="tag">오탐 최소화</span></div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Iridium 위성으로 자동 전송</div>
+          <div class="step-desc">셀룰러가 없어도 Iridium 위성망(전 지구 극지 포함 100% 커버리지)으로 GPS 좌표와 생체신호 데이터를 자동 전송합니다. 별도 안테나·장비 없이 소형 모듈로 작동합니다.</div>
+          <div class="step-tags"><span class="tag">Iridium 9603</span><span class="tag">전 지구 커버</span><span class="tag">자동 전송</span></div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">가족 스마트폰 즉시 알림</div>
+          <div class="step-desc">가족 앱에 GPS 지도 링크, 현재 생체신호 요약, 119 자동신고 버튼이 포함된 긴급 알림이 즉시 전송됩니다. SMS 백업도 함께 발송됩니다.</div>
+          <div class="step-tags"><span class="tag">GPS 위치</span><span class="tag">생체신호 요약</span><span class="tag">119 자동신고(선택)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 기술 스택 -->
+<section class="section dark">
+  <div class="container">
+    <p class="section-tag light">TECHNOLOGY</p>
+    <h2 class="section-h2 white">핵심 기술</h2>
+    <p class="section-desc light">AML 이상감지 4년 실전 경험을 생명 안전에 적용한 기술입니다.</p>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-icon">🧠</div>
+        <div class="tech-title">2단계 AI 이상감지</div>
+        <div class="tech-desc">1단계(Edge AI): 기기 내장, 오프라인 작동. 개인 7일 패턴 학습 후 이상 1차 판단.<br><br>2단계(Cloud AI): 위성 연결 시 Claude API 정밀분석으로 오탐 최소화. 향후 도메인 특화 소형 LLM 자체 탑재 예정.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🛰️</div>
+        <div class="tech-title">Iridium 위성통신</div>
+        <div class="tech-desc">전 지구 극지 포함 100% 커버리지. 별도 안테나 없이 소형 모듈(Iridium 9603, 17g) 내장.<br><br>지리산 오지, 태평양, 아마존 밀림에서도 50바이트 패킷 전송 가능.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">⌚</div>
+        <div class="tech-title">독립 안심밴드</div>
+        <div class="tech-desc">스마트폰 없이 독립적으로 작동. 심박·산소·체온·가속도 센서와 GPS·위성모듈 통합.<br><br>IPX7 방수, 72시간+ 배터리, 종단간 암호화(E2E) 보안 설계.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 비교 -->
+<section class="section">
+  <div class="container">
+    <p class="section-tag">COMPARISON</p>
+    <h2 class="section-h2">기존 서비스와의 차이</h2>
+    <p class="section-desc">갤럭시·애플도 위성 SOS를 탑재했습니다. 하지만 모두 버튼을 눌러야 합니다. 쓰러진 사람은 버튼을 누를 수 없습니다.</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>기능</th>
+          <th>Apple 위성 SOS</th>
+          <th>갤럭시 SOS</th>
+          <th>Garmin inReach</th>
+          <th class="hl">LifeSat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>의식 불명 시 자동 작동</td>
+          <td class="ex">✗ 버튼 필요</td>
+          <td class="ex">✗ 버튼 5회</td>
+          <td class="ex">✗ 수동 SOS</td>
+          <td class="hl chk">✓ AI 자동 감지</td>
+        </tr>
+        <tr>
+          <td>셀룰러 없이 작동</td>
+          <td class="chk">✓ 위성</td>
+          <td>△ 제한적</td>
+          <td class="chk">✓ 위성</td>
+          <td class="hl chk">✓ Iridium 전 지구</td>
+        </tr>
+        <tr>
+          <td>한국 위성 서비스</td>
+          <td class="ex">✗ 미지원</td>
+          <td>△ 제한</td>
+          <td class="chk">✓</td>
+          <td class="hl chk">✓ 전 지구</td>
+        </tr>
+        <tr>
+          <td>건강 이상 자동 감지</td>
+          <td class="ex">✗</td>
+          <td class="ex">✗</td>
+          <td class="ex">✗</td>
+          <td class="hl chk">✓ 심박·산소·체온</td>
+        </tr>
+        <tr>
+          <td>가족 직접 알림</td>
+          <td>△ 구조대</td>
+          <td>△ 구조대</td>
+          <td>△ 구조대</td>
+          <td class="hl chk">✓ 가족 스마트폰</td>
+        </tr>
+        <tr>
+          <td>스마트폰 없이 작동</td>
+          <td class="ex">✗</td>
+          <td class="ex">✗</td>
+          <td class="chk">✓</td>
+          <td class="hl chk">✓ 독립 안심밴드</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 시장 -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <p class="section-tag">MARKET</p>
+    <h2 class="section-h2">타겟 시장</h2>
+    <p class="section-desc">국내 1,500만 등산 인구부터 글로벌 오지 탐험가까지.</p>
+    <div class="market-grid">
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">B2C — 등산·트레킹 인구</div>
+          <div class="market-desc">국내 연간 1,500만명. 안심밴드 판매 + 위성 구독.</div>
+          <div class="market-size">월 9,900원 구독</div>
+        </div>
+      </div>
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">B2C — 독거노인 가족</div>
+          <div class="market-desc">전국 200만 가구. 자녀가 부모에게 선물하는 안전.</div>
+          <div class="market-size">안심밴드 15~20만원</div>
+        </div>
+      </div>
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">B2G — 지자체 독거노인 안전망</div>
+          <div class="market-desc">전국 지자체 공공조달. 독거노인 복지사업 연계.</div>
+          <div class="market-size">1억~5억원/지자체</div>
+        </div>
+      </div>
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">B2B — 원양어선·해양 기업</div>
+          <div class="market-desc">전국 5만명. 선박회사 단체 계약.</div>
+          <div class="market-size">연 500~3,000만원</div>
+        </div>
+      </div>
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">글로벌 — SafeBand</div>
+          <div class="market-desc">히말라야·아마존·극지 탐험. 해외 SaaS 확장.</div>
+          <div class="market-size">글로벌 B2B SaaS</div>
+        </div>
+      </div>
+      <div class="market-card">
+        <div class="market-dot"></div>
+        <div>
+          <div class="market-title">B2C — 청소년 자녀 학부모</div>
+          <div class="market-desc">음영지역 귀가 안전. 전국 수백만 가정.</div>
+          <div class="market-size">가족 구독 플랜</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="cta-h2">내 사람이 어디에 있든,<br><em>안전한 세상</em>을 만들고 싶습니다</h2>
+    <p class="cta-desc">중소벤처기업부 모두의 창업 프로젝트 2차에 도전 중입니다.<br>♡ 좋아요 하나가 LifeSat을 현실로 만드는 한 걸음입니다.</p>
+    <div class="cta-guide">
+      <p>
+        <strong>① </strong>아래 버튼 클릭 → LifeSat 아이디어 페이지로 바로 이동<br>
+        <strong>② </strong>페이지에서 <strong>♡ 좋아요</strong> 클릭
+      </p>
+    </div>
+    <br>
+    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="btn-teal" style="font-size:1.05rem; padding:16px 40px;">♡ 지금 좋아요 누르기</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo"><span class="gmw">GMW</span><span class="soft">Soft</span> &nbsp;|&nbsp; LifeSat</div>
+      <div class="footer-info">주식회사 지엠더블유소프트 | 사업자번호: 808-86-01896 | 대표: 최서열<br>SafeBand — Global Brand | 소프트웨어로 세상을 이롭게</div>
+    </div>
+    <div class="footer-copy">© 2021 지엠더블유소프트 (주). All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function adjustLayout() {
+  const banner = document.getElementById('topBanner');
+  const nav = document.querySelector('nav');
+  if (!banner || banner.classList.contains('hidden')) { nav.style.top = '0'; return; }
+  nav.style.top = banner.offsetHeight + 'px';
+}
+function closeBanner() {
+  document.getElementById('topBanner').classList.add('hidden');
+  document.querySelector('nav').style.top = '0';
+  sessionStorage.setItem('bannerClosed', '1');
+}
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('bannerClosed')) closeBanner();
+  else adjustLayout();
+});
+window.addEventListener('resize', adjustLayout);
+</script>
+</body>
+</html>
