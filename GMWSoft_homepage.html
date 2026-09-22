@@ -141,6 +141,7 @@ nav {
 
 /* ── BUSINESS ── */
 .biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.biz-grid-2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
 .biz-card { border: 1px solid rgba(0,115,188,0.12); border-radius: 12px; padding: 36px 28px; transition: box-shadow 0.2s, transform 0.2s; background: #fff; }
 .biz-card:hover { box-shadow: 0 8px 32px rgba(0,115,188,0.12); transform: translateY(-3px); }
 .biz-card.featured { background: linear-gradient(160deg, #0A1628, #1a0a35); border-color: transparent; }
@@ -226,6 +227,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
   .hero-globe { display: none; }
   .about-grid, .ls-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
   .biz-grid { grid-template-columns: 1fr; }
+  .biz-grid-2 { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
   .form-row { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
@@ -332,7 +334,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 <nav>
   <a class="logo" href="#">
     <div>
-      <div class="logo-text"><span class="gmw">GMW</span><span class="soft">S<svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="display:inline-block;vertical-align:middle;margin:0 1px 2px"><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.4" fill="none"/><ellipse cx="10" cy="10" rx="4.5" ry="8.5" stroke="currentColor" stroke-width="1.2" fill="none"/><ellipse cx="10" cy="10" rx="8.5" ry="3" stroke="currentColor" stroke-width="1.2" fill="none"/><ellipse cx="10" cy="10" rx="12" ry="4" stroke="currentColor" stroke-width="1.3" fill="none" transform="rotate(-30 10 10)"/></svg>FT</span></div>
+      <div class="logo-text"><span class="gmw">GMW</span><span class="soft">Soft</span></div>
       <div class="logo-sub">주식회사 지엠더블유소프트</div>
     </div>
   </a>
@@ -443,8 +445,32 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
   <div class="container">
     <p class="section-tag">BUSINESS</p>
     <h2 class="section-h2">사업 영역</h2>
-    <p class="section-desc">34년 금융 IT 경험을 바탕으로 AML 구축, AI 자동화, 위성 안전망 세 가지 영역에서 소프트웨어로 세상을 이롭게 합니다.</p>
+    <p class="section-desc">34년 금융 IT 경험을 기반으로 차세대 시스템 구축·컨설팅부터 AML·AI 솔루션, 위성 안전망 서비스까지 폭넓게 사업을 전개합니다.</p>
     <div class="biz-grid">
+      <div class="biz-card">
+        <div class="biz-icon">🏗️</div>
+        <div class="biz-title">금융 IT 차세대 시스템 구축</div>
+        <div class="biz-desc">증권·은행·보험·카드 전 업권의 차세대 코어 시스템 분석·설계·개발·테스트. PM/PL 리더십으로 대형 프로젝트를 성공적으로 완수.</div>
+        <div class="biz-tags">
+          <span class="tag">차세대 시스템</span>
+          <span class="tag">증권·은행·보험</span>
+          <span class="tag">PM/PL</span>
+          <span class="tag">업무 분석</span>
+          <span class="tag">설계·개발</span>
+        </div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">📋</div>
+        <div class="biz-title">IT 컨설팅 &amp; PMO</div>
+        <div class="biz-desc">금융기관 IT 전략 수립, 프로세스 진단·개선, 대형 SI 프로젝트 관리(PMO). 현장 경험에서 나온 실무 중심 컨설팅 제공.</div>
+        <div class="biz-tags">
+          <span class="tag">IT 전략</span>
+          <span class="tag">PMO</span>
+          <span class="tag">프로세스 개선</span>
+          <span class="tag">품질 관리</span>
+          <span class="tag">위험 관리</span>
+        </div>
+      </div>
       <div class="biz-card" style="cursor:pointer;" onclick="location.href='AML_detail.html'">
         <div class="biz-icon">🏦</div>
         <div class="biz-title">AML 시스템 구축</div>
@@ -457,6 +483,8 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
           <span class="tag">RBA</span>
         </div>
       </div>
+    </div>
+    <div class="biz-grid-2">
       <div class="biz-card">
         <div class="biz-icon">🤖</div>
         <div class="biz-title">AI 자동화 솔루션</div>
@@ -465,9 +493,19 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
           <span class="tag">Claude API</span>
           <span class="tag">Claude Code</span>
           <span class="tag">Vibe Coding</span>
-          <span class="tag">프롬프트 엔지니어링</span>
           <span class="tag">STR 자동화</span>
           <span class="tag">AI 이상감지</span>
+        </div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-icon">💻</div>
+        <div class="biz-title">소프트웨어 개발 외주</div>
+        <div class="biz-desc">기업 맞춤형 소프트웨어 개발, 레거시 시스템 현대화, API 연동·통합. 금융·공공·일반기업을 대상으로 신뢰도 높은 납기 내 개발 수행.</div>
+        <div class="biz-tags">
+          <span class="tag">맞춤 개발</span>
+          <span class="tag">레거시 현대화</span>
+          <span class="tag">API 통합</span>
+          <span class="tag">웹·앱 개발</span>
         </div>
       </div>
       <div class="biz-card featured" style="cursor:pointer;" onclick="openSlide()">
@@ -724,7 +762,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-logo"><span class="gmw">GMW</span><span class="soft">S<svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="display:inline-block;vertical-align:middle;margin:0 1px 2px"><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.4" fill="none"/><ellipse cx="10" cy="10" rx="4.5" ry="8.5" stroke="currentColor" stroke-width="1.2" fill="none"/><ellipse cx="10" cy="10" rx="8.5" ry="3" stroke="currentColor" stroke-width="1.2" fill="none"/><ellipse cx="10" cy="10" rx="12" ry="4" stroke="currentColor" stroke-width="1.3" fill="none" transform="rotate(-30 10 10)"/></svg>FT</span></div>
+        <div class="footer-logo"><span class="gmw">GMW</span><span class="soft">Soft</span></div>
         <div class="footer-slogan">Gain Much Word Software — 소프트웨어로 세상을 이롭게</div>
         <div class="footer-corp">
           주식회사 지엠더블유소프트<br>
