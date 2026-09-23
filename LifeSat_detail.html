@@ -29,6 +29,9 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .nav-cta { background: var(--teal); color: var(--navy); padding: 9px 22px; border-radius: 4px; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: background 0.2s; }
 .nav-cta:hover { background: var(--teal2); }
 
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: 0; padding: 8px; }
+.hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; }
+
 /* HERO */
 .hero { min-height: 100vh; background: linear-gradient(160deg, #0A1628 0%, #102040 60%, #1a0a35 100%); display: flex; align-items: center; padding: 120px 5% 80px; position: relative; overflow: hidden; }
 .hero::before { content: ''; position: absolute; top: -20%; right: -10%; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(0,115,188,0.15) 0%, transparent 70%); }
@@ -135,6 +138,10 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  nav.menu-open .nav-links { display: flex; flex-direction: column; gap: 0; position: absolute; top: 68px; left: 0; right: 0; background: #0A1628; border-bottom: 1px solid rgba(0,115,188,0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px 5% 16px; }
+  nav.menu-open .nav-links a { display: block; padding: 12px 0; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .hamburger { display: flex; }
+  .nav-cta { display: none; }
   .hero-inner { grid-template-columns: 1fr; }
   .hero-visual { display: none; }
   .problem-grid, .tech-grid { grid-template-columns: 1fr; }
@@ -167,6 +174,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
 }
 .banner-link:hover { background: #67E8F9; }
 .banner-close {
+  top: 50%; transform: translateY(-50%);
   position: absolute; right: 20px;
   background: none; border: none; color: rgba(255,255,255,0.7);
   font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
@@ -174,6 +182,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
 }
 .banner-close:hover { color: #fff; }
 .top-banner.hidden { display: none; }
+@media (max-width: 600px) { .top-banner { padding: 8px 44px 8px 16px; } .banner-text { font-size: 0.8rem; gap: 6px; } .banner-sub { display: none; } }
 </style>
 </head>
 <body>
@@ -182,11 +191,10 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
 <div class="top-banner" id="topBanner">
   <div class="banner-text">
     <span>🛰️ <strong>모두의 창업 2차</strong> 도전 중!</span>
-    <span>LifeSat — 가족 안심 위성 안전망</span>
-    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4"
-       target="_blank" class="banner-link">♡ 좋아요 누르기</a>
+    <span class="banner-sub">LifeSat — 가족 안심 위성 안전망</span>
+    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="banner-link">♡ 좋아요 누르기</a>
   </div>
-  <button class="banner-close" onclick="closeBanner()">✕</button>
+  <button class="banner-close" type="button" aria-label="배너 닫기" onclick="closeBanner()">✕</button>
 </div>
 
 <nav>
@@ -198,10 +206,11 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
     <li><a href="GMWSoft_homepage.html#about">회사소개</a></li>
     <li><a href="AML_detail.html">AML 솔루션</a></li>
     <li><a href="GMWSoft_homepage.html#reference">레퍼런스</a></li>
-    <li><a href="#">LifeSat</a></li>
+    <li><a href="#" aria-current="page">LifeSat</a></li>
     <li><a href="GMWSoft_homepage.html#contact">문의</a></li>
   </ul>
-  <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="nav-cta">♡ 좋아요 누르기</a>
+  <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="nav-cta">♡ 좋아요 누르기</a>
+  <button class="hamburger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="toggleMenu(this)"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
@@ -213,7 +222,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
       <h1 class="hero-h1">통신이 끊긴 어디서든,<br><em>내 사람은 안전합니다</em></h1>
       <p class="hero-desc">AI가 건강 이상을 자동 감지하고 위성으로 가족에게 즉시 알립니다. 버튼을 누르지 않아도, 의식이 없어도 작동합니다.</p>
       <div class="hero-btns">
-        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="btn-teal">♡ 좋아요로 응원하기</a>
+        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="btn-teal">♡ 좋아요로 응원하기</a>
         <a href="#how" class="btn-outline">작동 방식 보기</a>
       </div>
     </div>
@@ -470,7 +479,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
       </p>
     </div>
     <br>
-    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="btn-teal" style="font-size:1.05rem; padding:16px 40px;">♡ 지금 좋아요 누르기</a>
+    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="btn-teal" style="font-size:1.05rem; padding:16px 40px;">♡ 지금 좋아요 누르기</a>
   </div>
 </section>
 
@@ -479,13 +488,21 @@ footer { background: #0A1628; color: #94A3B8; padding: 40px 5% 28px; border-top:
   <div class="footer-inner">
     <div>
       <div class="footer-logo"><span class="gmw">GMW</span><span class="soft">Soft</span> &nbsp;|&nbsp; LifeSat</div>
-      <div class="footer-info">주식회사 지엠더블유소프트 | 사업자번호: 808-86-01896 | 대표: 최서열<br>SafeBand — Global Brand | 소프트웨어로 세상을 이롭게</div>
+      <div class="footer-info">주식회사 지엠더블유소프트 | 사업자번호: 808-86-01896 | 대표: 최서열<br>SafeBand — Global Brand | 소프트웨어로 세상을 이롭게 | trustychoi@naver.com</div>
     </div>
     <div class="footer-copy">© 2021 지엠더블유소프트 (주). All rights reserved.</div>
   </div>
 </footer>
 
 <script>
+function toggleMenu(btn) {
+  const nav = document.querySelector('nav');
+  const open = nav.classList.toggle('menu-open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+</script>
+<script>
+// 상단 배너 — 내비 위치 보정
 function adjustLayout() {
   const banner = document.getElementById('topBanner');
   const nav = document.querySelector('nav');
@@ -495,11 +512,11 @@ function adjustLayout() {
 function closeBanner() {
   document.getElementById('topBanner').classList.add('hidden');
   document.querySelector('nav').style.top = '0';
-  sessionStorage.setItem('bannerClosed', '1');
+  try { sessionStorage.setItem('bannerClosed', '1'); } catch (e) {}
 }
 window.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('bannerClosed')) closeBanner();
-  else adjustLayout();
+  let closed = false; try { closed = sessionStorage.getItem('bannerClosed') === '1'; } catch (e) {}
+  if (closed) closeBanner(); else adjustLayout();
 });
 window.addEventListener('resize', adjustLayout);
 </script>

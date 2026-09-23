@@ -48,7 +48,7 @@ nav {
   transition: opacity 0.2s;
 }
 .nav-contact:hover { opacity: 0.88; }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: 0; padding: 8px; }
 .hamburger span { width: 24px; height: 2px; background: var(--dgray); border-radius: 2px; transition: 0.3s; }
 
 /* ── HERO ── */
@@ -222,6 +222,9 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  nav.menu-open .nav-links { display: flex; flex-direction: column; gap: 0; position: absolute; top: 68px; left: 0; right: 0; background: #fff; border-bottom: 1px solid rgba(0,115,188,0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.08); padding: 8px 5% 16px; }
+  nav.menu-open .nav-links a { display: block; padding: 12px 0; font-size: 1rem; border-bottom: 1px solid #EEF1F4; }
+  .nav-contact { display: none; }
   .hamburger { display: flex; }
   .hero-inner { grid-template-columns: 1fr; }
   .hero-globe { display: none; }
@@ -308,6 +311,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 }
 .banner-link:hover { background: #67E8F9; }
 .banner-close {
+  top: 50%; transform: translateY(-50%);
   position: absolute; right: 20px;
   background: none; border: none; color: rgba(255,255,255,0.7);
   font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
@@ -315,6 +319,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 }
 .banner-close:hover { color: #fff; }
 .top-banner.hidden { display: none; }
+@media (max-width: 600px) { .top-banner { padding: 8px 44px 8px 16px; } .banner-text { font-size: 0.8rem; gap: 6px; } .banner-sub { display: none; } }
 </style>
 </head>
 <body>
@@ -324,11 +329,10 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 <div class="top-banner" id="topBanner">
   <div class="banner-text">
     <span>🛰️ <strong>모두의 창업 2차</strong> 도전 중!</span>
-    <span>LifeSat — 가족 안심 위성 안전망</span>
-    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4"
-       target="_blank" class="banner-link">♡ 좋아요 누르기</a>
+    <span class="banner-sub">LifeSat — 가족 안심 위성 안전망</span>
+    <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="banner-link">♡ 좋아요 누르기</a>
   </div>
-  <button class="banner-close" onclick="closeBanner()">✕</button>
+  <button class="banner-close" type="button" aria-label="배너 닫기" onclick="closeBanner()">✕</button>
 </div>
 
 <nav>
@@ -346,9 +350,9 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
     <li><a href="#contact">문의</a></li>
   </ul>
   <a href="#contact" class="nav-contact" onclick="event.preventDefault();scrollToId('contact')">문의하기</a>
-  <div class="hamburger" onclick="this.classList.toggle('open')">
+  <button class="hamburger" type="button" aria-label="메뉴 열기" aria-expanded="false" onclick="toggleMenu(this)">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -605,7 +609,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
       </div>
       <div>
         <div style="font-size:1.8rem; font-weight:900; color:#0073BC;">8개사</div>
-        <div style="font-size:0.8rem; color:#888; margin-top:4px;">AML 구축 완료</div>
+        <div style="font-size:0.8rem; color:#888; margin-top:4px;">AML PM/PMO 수행</div>
       </div>
       <div>
         <div style="font-size:1.8rem; font-weight:900; color:#0073BC;">전 업권</div>
@@ -661,7 +665,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
         <div class="ls-cta-box">
           <div class="ls-cta-title">중소벤처기업부 모두의 창업 2차 도전 중</div>
           <div class="ls-cta-desc">닉네임 '별지킴이'로 도전 중입니다. 좋아요로 응원해 주세요!</div>
-          <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="btn-grad" style="font-size:0.9rem; padding:11px 24px;">♡ 좋아요 누르기</a>
+          <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="btn-grad" style="font-size:0.9rem; padding:11px 24px;">♡ 좋아요 누르기</a>
         </div>
       </div>
       <div>
@@ -719,6 +723,13 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
           </div>
         </div>
         <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-label">이메일</div>
+            <div class="contact-val"><a href="mailto:trustychoi@naver.com" style="color:inherit;text-decoration:none;">trustychoi@naver.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
           <div class="contact-icon">📍</div>
           <div>
             <div class="contact-label">소재지</div>
@@ -734,30 +745,30 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
         </div>
       </div>
       <div class="form-card">
-        <form onsubmit="handleSubmit(event)">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
           <div class="form-row">
             <div class="form-group">
               <label>성함 *</label>
-              <input type="text" placeholder="홍길동" required>
+              <input type="text" name="성함" placeholder="홍길동" required>
             </div>
             <div class="form-group">
               <label>회사명</label>
-              <input type="text" placeholder="(주)예시회사">
+              <input type="text" name="회사명" placeholder="(주)예시회사">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>이메일 *</label>
-              <input type="email" placeholder="example@company.com" required>
+              <input type="email" name="email" placeholder="example@company.com" required>
             </div>
             <div class="form-group">
               <label>연락처</label>
-              <input type="tel" placeholder="010-0000-0000">
+              <input type="tel" name="연락처" placeholder="010-0000-0000">
             </div>
           </div>
           <div class="form-group">
             <label>문의 유형 *</label>
-            <select required>
+            <select name="문의유형" required>
               <option value="">선택해주세요</option>
               <option>AML 시스템 구축</option>
               <option>AI 자동화 솔루션</option>
@@ -768,10 +779,11 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
           </div>
           <div class="form-group">
             <label>문의 내용 *</label>
-            <textarea placeholder="문의하실 내용을 자유롭게 작성해 주세요." required></textarea>
+            <textarea name="문의내용" placeholder="문의하실 내용을 자유롭게 작성해 주세요." required></textarea>
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
           </div>
           <button type="submit" class="form-submit">문의 보내기</button>
-          <p class="form-notice">입력하신 정보는 문의 답변 목적으로만 활용됩니다.</p>
+          <p class="form-notice" id="formNotice">입력하신 정보는 문의 답변 목적으로만 활용됩니다.</p>
         </form>
       </div>
     </div>
@@ -802,7 +814,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
         <a href="#about">회사 소개</a>
         <a href="#reference">레퍼런스</a>
         <a href="#contact">문의하기</a>
-        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank">모두의 창업 ♡</a>
+        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener">모두의 창업 ♡</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -858,51 +870,12 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 
     <div class="slide-cta">
       <p>중소벤처기업부 모두의 창업 2차 도전 중입니다.<br>♡ 좋아요 하나가 큰 힘이 됩니다!</p>
-      <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="slide-btn">♡ 지금 좋아요 누르기</a>
+      <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" rel="noopener" class="slide-btn">♡ 지금 좋아요 누르기</a>
     </div>
 
   </div>
 </div>
 
-
-<div class="modal-overlay" id="modalLifeSat" style="display:none;" onclick="if(event.target===this)closeModal('modalLifeSat')">
-  <div class="modal-box">
-    <div class="modal-header" style="background:linear-gradient(135deg,#0A1628,#1a0a35);">
-      <div class="modal-title">🛰️ LifeSat — 가족 안심 위성 안전망</div>
-      <button class="modal-close" onclick="closeModal('modalLifeSat')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-section">
-        <h3>서비스 한 줄 정의</h3>
-        <div style="background:#F0F7FF;border-left:4px solid #0073BC;padding:16px 20px;border-radius:0 8px 8px 0;font-size:0.95rem;color:#1A2E4A;font-weight:600;">"셀룰러가 끊긴 지구상 어디서든, AI가 건강 이상을 자동 감지하여 위성으로 가족에게 즉시 알린다"</div>
-      </div>
-      <div class="modal-section">
-        <h3>작동 방식</h3>
-        <div>
-          <div class="modal-step"><div class="modal-step-num">1</div><div><div class="modal-step-title">안심밴드 착용</div><div class="modal-step-desc">손목·반지·목걸이 형태. IPX7 방수, 72시간+ 배터리.</div></div></div>
-          <div class="modal-step"><div class="modal-step-num">2</div><div><div class="modal-step-title">생체신호 실시간 측정</div><div class="modal-step-desc">심박수·산소포화도·체온·낙상 실시간 측정.</div></div></div>
-          <div class="modal-step"><div class="modal-step-num">3</div><div><div class="modal-step-title">Edge AI 자동 이상 감지</div><div class="modal-step-desc">기기 내장 AI가 오프라인으로 이상 1차 판단. 위성 연결 시 Cloud AI 정밀분석.</div></div></div>
-          <div class="modal-step"><div class="modal-step-num">4</div><div><div class="modal-step-title">Iridium 위성 자동 전송</div><div class="modal-step-desc">셀룰러 없어도 전 지구 Iridium 위성으로 GPS+생체신호 자동 전송.</div></div></div>
-          <div class="modal-step"><div class="modal-step-num">5</div><div><div class="modal-step-title">가족 스마트폰 즉시 알림</div><div class="modal-step-desc">GPS 위치 + 건강 상태 + 119 자동신고(선택).</div></div></div>
-        </div>
-      </div>
-      <div class="modal-section">
-        <h3>기존 서비스 대비 차별점</h3>
-        <table class="modal-table">
-          <tr><th>기능</th><th>Apple·갤럭시 SOS</th><th class="modal-hl">LifeSat</th></tr>
-          <tr><td>의식 불명 시 작동</td><td class="modal-ex">✗ 버튼 필요</td><td class="modal-chk">✓ AI 자동 감지</td></tr>
-          <tr><td>한국 위성 서비스</td><td class="modal-ex">✗ 미지원</td><td class="modal-chk">✓ Iridium 전 지구</td></tr>
-          <tr><td>건강 이상 감지</td><td class="modal-ex">✗ 없음</td><td class="modal-chk">✓ 심박·산소·체온</td></tr>
-          <tr><td>가족 직접 알림</td><td>△ 구조대</td><td class="modal-chk">✓ 가족 스마트폰</td></tr>
-        </table>
-      </div>
-      <div class="modal-cta" style="background:linear-gradient(135deg,rgba(0,201,212,0.08),rgba(0,115,188,0.08));border-color:rgba(0,201,212,0.2);">
-        <p>중소벤처기업부 모두의 창업 2차 도전 중입니다. ♡ 좋아요로 응원해 주세요!</p>
-        <a href="https://www.modoo.or.kr/idea/list?keyword=%EB%B3%84%EC%A7%80%ED%82%B4%EC%9D%B4" target="_blank" class="modal-btn teal">♡ 좋아요 누르기</a>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <script>
@@ -930,30 +903,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // 문의 폼 제출
 
 
-// 배너 높이 조정
-function adjustLayout() {
-  const banner = document.getElementById('topBanner');
-  const nav = document.querySelector('nav');
-  if (!banner || banner.classList.contains('hidden')) {
-    nav.style.top = '0';
-    return;
-  }
-  const bh = banner.offsetHeight;
-  nav.style.top = bh + 'px';
-}
-function closeBanner() {
-  document.getElementById('topBanner').classList.add('hidden');
-  document.querySelector('nav').style.top = '0';
-  sessionStorage.setItem('bannerClosed', '1');
-}
-window.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('bannerClosed')) {
-    closeBanner();
-  } else {
-    adjustLayout();
-  }
-});
-window.addEventListener('resize', adjustLayout);
 
 function openSlide() {
   document.getElementById('slidePanel').classList.add('active');
@@ -969,25 +918,71 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Escape') closeSlide();
 });
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = '✓ 문의가 접수되었습니다';
-  btn.style.background = '#2D6A4F';
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '문의 보내기';
-    btn.style.background = '';
-    btn.disabled = false;
-    e.target.reset();
-  }, 3000);
+  const form = e.target;
+  const btn = form.querySelector('.form-submit');
+  const notice = document.getElementById('formNotice');
+  if (form._honey && form._honey.value) return;
+  const data = Object.fromEntries(new FormData(form).entries());
+  delete data._honey;
+  data._subject = '[GMW Soft 홈페이지 문의] ' + (data['문의유형'] || '') + ' - ' + (data['성함'] || '');
+  data._template = 'table';
+  data._captcha = 'false';
+  btn.disabled = true; btn.textContent = '보내는 중...';
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/trustychoi@naver.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || String(out.success) !== 'true') throw new Error(out.message || 'fail');
+    btn.textContent = '✓ 문의가 접수되었습니다';
+    btn.style.background = '#2D6A4F';
+    notice.textContent = '영업일 기준 1일 이내에 회신드리겠습니다.';
+    form.reset();
+    setTimeout(() => { btn.textContent = '문의 보내기'; btn.style.background = ''; btn.disabled = false; }, 4000);
+  } catch (err) {
+    btn.textContent = '문의 보내기'; btn.disabled = false;
+    notice.innerHTML = '전송에 실패했습니다. <a href="mailto:trustychoi@naver.com">trustychoi@naver.com</a>으로 직접 보내 주세요.';
+  }
 }
+
+function toggleMenu(btn) {
+  const nav = document.querySelector('nav');
+  const open = nav.classList.toggle('menu-open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+document.addEventListener('click', e => {
+  const nav = document.querySelector('nav');
+  if (nav.classList.contains('menu-open') && e.target.closest('.nav-links a')) nav.classList.remove('menu-open');
+});
 
 // 스크롤 시 네비 스타일
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
   nav.style.boxShadow = window.scrollY > 50 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
 });
+</script>
+<script>
+// 상단 배너 — 내비 위치 보정
+function adjustLayout() {
+  const banner = document.getElementById('topBanner');
+  const nav = document.querySelector('nav');
+  if (!banner || banner.classList.contains('hidden')) { nav.style.top = '0'; return; }
+  nav.style.top = banner.offsetHeight + 'px';
+}
+function closeBanner() {
+  document.getElementById('topBanner').classList.add('hidden');
+  document.querySelector('nav').style.top = '0';
+  try { sessionStorage.setItem('bannerClosed', '1'); } catch (e) {}
+}
+window.addEventListener('DOMContentLoaded', () => {
+  let closed = false; try { closed = sessionStorage.getItem('bannerClosed') === '1'; } catch (e) {}
+  if (closed) closeBanner(); else adjustLayout();
+});
+window.addEventListener('resize', adjustLayout);
 </script>
 </body>
 </html>
