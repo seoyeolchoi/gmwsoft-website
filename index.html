@@ -235,6 +235,10 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
   .form-row { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .about-vals { grid-template-columns: 1fr; }
+  .track-grid { grid-template-columns: 1fr !important; }
+  .sum-bar { grid-template-columns: 1fr 1fr !important; padding: 20px !important; }
+  .about-profile { padding: 28px 20px; }
+  .form-card { padding: 24px 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .globe-ring, .pulse { animation: none; }
@@ -247,12 +251,12 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
 }
 .slide-overlay.active { display: block !important; }
 .slide-panel {
-  visibility: hidden; position: fixed; top: 0; right: -100%; width: 520px; max-width: 100%;
+  visibility: hidden; position: fixed; top: 0; right: 0; transform: translateX(100%); width: 520px; max-width: 100%;
   height: 100vh; background: #0A1628; z-index: 1001;
-  overflow-y: auto; transition: right 0.38s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), visibility 0.38s;
   box-shadow: -8px 0 40px rgba(0,0,0,0.4);
 }
-.slide-panel.active { right: 0; visibility: visible; }
+.slide-panel.active { transform: translateX(0); visibility: visible; }
 .slide-header {
   position: sticky; top: 0; z-index: 10;
   background: linear-gradient(135deg, #0A1628, #1a0a35);
@@ -555,7 +559,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
     <h2 class="section-h2">주요 실적</h2>
     <p class="section-desc">34년간 금융 IT 시스템을 직접 분석·설계·개발·납품해온 실전 경험이 GMW Soft의 핵심 경쟁력입니다.</p>
 
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-bottom:48px;">
+    <div class="track-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-bottom:48px;">
 
       <!-- AML -->
       <div style="background:#fff; border:1px solid rgba(0,115,188,0.12); border-radius:12px; padding:32px 28px; border-top:4px solid #0073BC;">
@@ -602,7 +606,7 @@ footer { background: #0A1628; color: #94A3B8; padding: 56px 5% 36px; }
     </div>
 
     <!-- 경력 요약 바 -->
-    <div style="background:#F8FAFB; border-radius:12px; padding:28px 36px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center;">
+    <div class="sum-bar" style="background:#F8FAFB; border-radius:12px; padding:28px 36px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center;">
       <div>
         <div style="font-size:1.8rem; font-weight:900; color:#0073BC;">34년</div>
         <div style="font-size:0.8rem; color:#888; margin-top:4px;">금융 IT 총 경력</div>
@@ -931,12 +935,17 @@ async function handleSubmit(e) {
   data._captcha = 'false';
   btn.disabled = true; btn.textContent = '보내는 중...';
   try {
-    const res = await fetch('https://formsubmit.co/ajax/trustychoi@naver.com', {
+    const res = await fetch('https://formsubmit.co/ajax/d562358c73bd51857fcc036999709475', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data)
     });
     const out = await res.json().catch(() => ({}));
+    if (/activat/i.test(out.message || '')) {
+      btn.textContent = '문의 보내기'; btn.disabled = false;
+      notice.textContent = '문의 수신 설정이 아직 완료되지 않았습니다. 잠시 후 다시 시도하시거나 trustychoi@naver.com으로 보내 주세요.';
+      return;
+    }
     if (!res.ok || String(out.success) !== 'true') throw new Error(out.message || 'fail');
     btn.textContent = '✓ 문의가 접수되었습니다';
     btn.style.background = '#2D6A4F';
